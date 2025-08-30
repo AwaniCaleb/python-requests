@@ -1,41 +1,60 @@
 import requests
 
-class Query_Params():
+
+class Query_Params:
+    """A class to demonstrate making a GET request with query parameters."""
     def __init__(self) -> None:
-        super().__init__()
-    
-    def get(self, url: str = None, params: dict = {}) -> requests.Response | None:
+        pass
+
+    def get(self, url: str, params: dict = {}) -> requests.Response | None:
         """
-        Performs a GET request to the specified URL.
+        Performs a GET request to the specified URL with optional parameters.
 
         Args:
-            url (str): The URL for the GET request.
+            url (str): The base URL for the GET request.
+            params (dict, optional): A dictionary of query parameters.
+                                     Defaults to an empty dictionary.
 
         Returns:
-            requests.Response: The response object from the GET request.
-            None: An error occured
+            requests.Response: The response object from the GET request if successful.
+            None: If a URL-related error occurs.
         """
         try:
-            # Send the GET request to the target URL and return the response object.
-            return requests.get(url=url, params=params)
+            # Automatically constructs the URL with the parameters.
+            response = requests.get(url=url, params=params)
+            return response
         except (
             requests.exceptions.URLRequired,
             requests.exceptions.MissingSchema,
             requests.exceptions.InvalidSchema,
-            requests.exceptions.InvalidURL
+            requests.exceptions.InvalidURL,
         ) as error:
-            # Handle URL-related exceptions
+            # Handle common URL-related exceptions gracefully.
             print(f"Request failed due to a URL error: {error}")
             return None
 
 
 if __name__ == "__main__":
+    # Instance of class.
     req = Query_Params()
-    
+
+    # Define the base URL and the dictionary of parameters.
     target_url = "https://httpbin.org/get"
-    params = {"time": "now"}
+    params_payload = {"key": "value", "name": "learning_coach"}
 
-    target_response = req.get(target_url, params)
+    # Make the GET request, passing the parameters.
+    target_response = req.get(target_url, params_payload)
 
-    if target_response.status_code == 200:
-        print(target_response.text)
+    # Check if the request was successful
+    if target_response and target_response.status_code == 200:
+        # Print the final URL
+        print("--- Final URL ---")
+        print(target_response.url)
+        
+        # Print the structured JSON content
+        print("\n--- Response JSON ---")
+        print(target_response.json())
+    else:
+        # Print a message with the status code if available.
+        status_code = target_response.status_code if target_response else "N/A"
+        print(f"Request failed with status code: {status_code}")
