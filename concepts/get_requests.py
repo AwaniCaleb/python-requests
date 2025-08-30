@@ -20,3 +20,7 @@ if __name__ == "__main__":
     target_url = "https://api.github.com/events"
 
     target_response = req.get(target_url)
+
+    if target_response.status_code == 200:
+        print(target_response.text)
+        print(target_response.json())
