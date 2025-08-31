@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     # Define the base URL and the dictionary of parameters.
     target_url = "https://httpbin.org/headers"
-    my_headers = {'User-Agent': 'Learning-Coach-App'}
+    my_headers = {'User-Agent': 'Learning-Coach-App', 'Authorization': 'Bearer MY_SECRET_TOKEN_HERE'}
 
     # Make the GET request, passing the parameters.
     target_response = req.get(target_url, headers=my_headers)
