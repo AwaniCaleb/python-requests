@@ -21,6 +21,20 @@ class TodoManager():
             print(f"Oops! Something went wrong: {e}")
             return None
 
+    def update_todo(self, id: int, todo: dict) -> dict:
+        try:
+            response = self.request_session.put(
+                f"https://jsonplaceholder.typicode.com/todos/{id}",
+                json=todo
+            )
+            response.raise_for_status()
+
+            print("To-do item updated successfully!")
+            return response.json()
+
+        except requests.exceptions.HTTPError as e:
+            print(f"Oops! Something went wrong: {e}")
+            return None
 
     def get_all_todos(self):
         all_todos = self.request_session.get("https://jsonplaceholder.typicode.com/todos")
@@ -49,4 +63,8 @@ if __name__ == "__main__":
         print("\n--- New To-do Item ---")
         print(created_todo)
 
-        # feat: Add functionality to create new todos
+    updated_todo = mgt.update_todo(200, {'title': 'Learning is fun'})
+
+    if updated_todo:
+        print("\n--- Updated To-do Item ---")
+        print(updated_todo)
