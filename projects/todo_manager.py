@@ -36,6 +36,20 @@ class TodoManager():
             print(f"Oops! Something went wrong: {e}")
             return None
 
+    def delete_todo(self, id: int) -> bool:
+        try:
+            response = self.request_session.delete(
+                f"https://jsonplaceholder.typicode.com/todos/{id}"
+            )
+            response.raise_for_status()
+
+            print("To-do item deleted successfully!")
+            return True
+
+        except requests.exceptions.HTTPError as e:
+            print(f"Oops! Something went wrong: {e}")
+            return False
+
     def get_all_todos(self):
         all_todos = self.request_session.get("https://jsonplaceholder.typicode.com/todos")
 
@@ -68,3 +82,9 @@ if __name__ == "__main__":
     if updated_todo:
         print("\n--- Updated To-do Item ---")
         print(updated_todo)
+
+    delete_todo_id = 200
+
+    if mgt.delete_todo(delete_todo_id):
+        print("\n--- Deleted To-do Item ---")
+        print(f"Todo with id {delete_todo_id} has been deleted")
