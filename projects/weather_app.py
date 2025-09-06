@@ -1,4 +1,5 @@
 import os
+import sys
 from typing import Literal, Union
 
 from dotenv import load_dotenv
@@ -127,9 +128,13 @@ class WeatherApp:
 if __name__ == "__main__":
     app = WeatherApp()
 
-    weather = app.get_weather("new york")
+    if len(sys.argv) < 2:
+        print(
+            "Please provide a city name as an argument. Example: python weather_app.py 'New York'"
+        )
+    else:
+        city_name = sys.argv[1]
+        weather_data = app.get_weather(city_name)
 
-    if weather:
-        print(app.explain_weather(weather))
-
-        print(app.explain_weather(weather, style="casual"))
+        if weather_data:
+            print(app.explain_weather(weather_data))
